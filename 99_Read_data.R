@@ -3,7 +3,7 @@ options(scipen = 100, digits = 5)
 library(tidyverse)
 
 # Import and select columns, create consistent ID
-surveydata_raw <- vroom::vroom("./Data/NSAOH_dataset_19DEC2024.csv") |>
+surveydata_raw <- vroom::vroom("C:/Users/Robin/NUS Dropbox/Robin Daniel Blythe/NDCS programs/Australian dental survey/Data/NSAOH_dataset_19DEC2024.csv") |>
   select(
     ### Time 2
     nsaoh2ID, nsaoh2numteeth, nsaoh2dhealth, nsaoh2toothach, nsaoh2appear, nsaoh2avoidfo,
