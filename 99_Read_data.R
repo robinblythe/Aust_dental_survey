@@ -3,7 +3,7 @@ options(scipen = 100, digits = 5)
 library(tidyverse)
 
 # Import and select columns, create consistent ID
-surveydata_raw <- vroom::vroom("C:/Users/Robin/NUS Dropbox/Robin Daniel Blythe/NDCS programs/Australian dental survey/Data/NSAOH_dataset_19DEC2024.csv") |>
+surveydata_raw <- vroom::vroom("C:/Users/Robin/NUS Dropbox/Robin Daniel Blythe/SOPI/Australian dental survey/Data/NSAOH_dataset_19DEC2024.csv") |>
   select(
     ### Time 2
     nsaoh2ID, nsaoh2numteeth, nsaoh2dhealth, nsaoh2toothach, nsaoh2appear, nsaoh2avoidfo,
@@ -33,9 +33,10 @@ surv_wide <- surveydata_raw |>
       nsaoh2income > 9 ~ 7,
       .default = nsaoh2income
     ),
+    d_dhealth = nsaoh2dhealth - nsaoh1DHEALTH,
   # Replace negative values with NA
   across(everything(), ~ replace(., . < 0, NA))) |>
-  select(ID, income1, income2, 
+  select(ID, income1, income2, d_dhealth,
          nsaoh2numteeth:nsaoh2IRSADscorecurr2016,
          nsaoh1NUMTEETH:nsaoh1IRSADSCORE2001
          )
@@ -73,3 +74,4 @@ surv_long <- bind_rows(surv_t1, surv_t2) |>
 
 remove(surveydata_raw, surv_t1, surv_t2)
 
+save(surv_long, surv_wide, file = "surveydata.RData")

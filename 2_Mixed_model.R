@@ -1,14 +1,22 @@
 # Exploratory modelling
-library(lme4)
+load("surveydata.RData")
+
+library(nlme)
 library(rms)
 library(performance)
 
-fit_mm <- lmer(
-  income ~ timepoint + dhealth + toothach + appear + costprev + 
-    sex + rcs(age, 4) + highqual + remotecode + IRSAD + 
-    (1|ID),
-  data = surv_long
+dd_mixed <- datadist(surv_long); options(datadist = "dd_mixed")
+
+fit_mm <- Gls(
+  income ~ timepoint * dhealth + appear + costprev + 
+    sex + rcs(age, 4) + highqual + IRSAD,
+  data = surv_long,
+  correlation = corCompSymm(form = ~1|ID)
 )
 
 AIC(fit_mm)
 check_model(fit_mm)
+summary(fit_mm) |> suppressWarnings() # check model effect sizes
+anova(fit_mm)
+plot(Predict(fit_mm)) |> suppressWarnings()
+
