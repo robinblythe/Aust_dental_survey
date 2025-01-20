@@ -33,10 +33,13 @@ surv_wide <- surveydata_raw |>
       nsaoh2income > 9 ~ 7,
       .default = nsaoh2income
     ),
-    d_dhealth = nsaoh2dhealth - nsaoh1DHEALTH,
   # Replace negative values with NA
   across(everything(), ~ replace(., . < 0, NA))) |>
-  select(ID, income1, income2, d_dhealth,
+  mutate(d_dhealth = nsaoh2dhealth - nsaoh1DHEALTH,
+         d_numteeth = ifelse(nsaoh1NUMTEETH - nsaoh2numteeth < 0, 
+                             0, 
+                             nsaoh1NUMTEETH - nsaoh2numteeth)) |>
+  select(ID, income1, income2, d_dhealth, d_numteeth,
          nsaoh2numteeth:nsaoh2IRSADscorecurr2016,
          nsaoh1NUMTEETH:nsaoh1IRSADSCORE2001
          )
