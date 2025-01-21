@@ -11,7 +11,7 @@ options(datadist = "dd")
 
 
 ### Ordinal model (ORM)
-fit_orm_dhealth <- orm(
+fit_dhealth <- lrm(
   formula = income2 ~ 
     d_dhealth +
     income1 + # Prior income
@@ -21,7 +21,7 @@ fit_orm_dhealth <- orm(
   x = T, y = T
 )
 
-fit_orm_numteeth <- orm(
+fit_numteeth <- lrm(
   formula = income2 ~ 
     d_numteeth +
     income1 + # Prior income
@@ -31,12 +31,12 @@ fit_orm_numteeth <- orm(
   x = T, y = T
 )
 
-
+fit_dhealth
+fit_numteeth
+summary(fit_numteeth)
 
 
 
 # Model summary
-anova(fit_orm_numteeth) # Checking impact of predictors
-suppressWarnings(plot(Predict(fit_orm_numteeth))) # Conditional relationships between income2 and X vars
-plot(resid(fit_orm_numteeth)) # Residuals plot (looks great)
-check_collinearity(fit_orm_numteeth) # Collinearity, measured by variance inflation factor
+anova(fit_numteeth) # Checking impact of predictors
+plot(resid(fit_numteeth)) # Residuals plot (looks great)

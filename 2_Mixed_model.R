@@ -14,6 +14,8 @@ fit_mm <- Gls(
   correlation = corCompSymm(form = ~1|ID)
 )
 
+fit_mm
+
 AIC(fit_mm)
 check_model(fit_mm)
 summary(fit_mm) |> suppressWarnings() # check model effect sizes
